@@ -18,8 +18,6 @@ void close(); // Close SDL
 
 float toScreenX(float x); // Convert world X to screen X
 float toScreenY(float y); // Convert world Y to screen Y
-int toScreenX(int x); // Convert world X to screen X
-int toScreenY(int y); // Convert world Y to screen Y
 void drawAxes(); // Draw axes
 void drawGrid(); // Draw grid
 void drawFunction(float (*f)(float), float xMin, float xMax, float step, SDL_Color color); // Draw function
@@ -79,39 +77,12 @@ float toScreenY(float y)
     return static_cast<float>((SCREEN_HEIGHT / 2) - (y - camY) * scale); // Convert world Y to screen Y
 }
 
-int toScreenX(int x) 
-{
-    return static_cast<int>((x - camX) * scale + SCREEN_WIDTH / 2); // Convert world X to screen X
-}
-
-int toScreenY(int y) 
-{
-    return static_cast<int>((SCREEN_HEIGHT / 2) - (y - camY) * scale); // Convert world Y to screen Y
-}
-
 void drawAxes()
 {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // Set color to white
-
-    int offset = 1; // Offset for drawing axes
-
-    // X
-    for (int dy = -offset; dy <= offset; ++dy)
-    {
-        SDL_RenderDrawLine(renderer,
-            toScreenX(-200), toScreenY(0) + dy,
-            toScreenX(200), toScreenY(0) + dy);
-    }
-
-    // Y 
-    for (int dx = -offset; dx <= offset; ++dx)
-    {
-        SDL_RenderDrawLine(renderer,
-            toScreenX(0) + dx, toScreenY(-200),
-            toScreenX(0) + dx, toScreenY(200));
-    }
+    SDL_RenderFillRect(renderer, new SDL_Rect{0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, 1}); // Draw X-axis
+    SDL_RenderFillRect(renderer, new SDL_Rect{SCREEN_WIDTH / 2, 0, 1, SCREEN_HEIGHT}); // Draw Y-axis
 }
-
 
 void drawGrid()
 {
@@ -221,14 +192,14 @@ int main()
 
         drawGrid();
         drawAxes();
-        drawFunction([](float x) { return x * x; }, -200, 200, 0.1f, {255, 255, 0, 255}); // Draw a sample function (x^2)
-        drawFunction([](float x) { return std::sin(x) * 2; }, -200, 200, 0.1f, {255, 0, 255, 255}); // Draw a sample function (sin(x))
-        drawFunction([](float x) { return std::cos(x); }, -200, 200, 0.1f, {0, 255, 255, 255}); // Draw a sample function (cos(x))
-        drawFunction([](float x) { return std::tan(x); }, -200, 200, 0.1f, {0, 255, 0, 255}); // Draw a sample function (tan(x))
-        drawFunction([](float x) { return std::exp(x / 100); }, -200, 200, 0.1f, {255, 0, 0, 255}); // Draw a sample function (exp(x))
-        drawFunction([](float x) { return std::log(x + 200); }, -200, 200, 0.1f, {0, 0, 255, 255}); // Draw a sample function (log(x))
-        drawFunction([](float x) { return std::sqrt(x + 200); }, -200, 200, 0.1f, {255, 255, 255, 255}); // Draw a sample function (sqrt(x))
-        drawFunction([](float x) { return std::abs(x); }, -200, 200, 0.1f, {255, 128, 0, 255}); // Draw a sample function (abs(x))
+//        drawFunction([](float x) { return x * x; }, -200, 200, 0.1f, {255, 255, 0, 255}); // Draw a sample function (x^2)
+//        drawFunction([](float x) { return std::sin(x); }, -200, 200, 0.1f, {255, 0, 255, 255}); // Draw a sample function (sin(x))
+//        drawFunction([](float x) { return std::cos(x); }, -200, 200, 0.1f, {0, 255, 255, 255}); // Draw a sample function (cos(x))
+//        drawFunction([](float x) { return std::tan(x); }, -200, 200, 0.1f, {0, 255, 0, 255}); // Draw a sample function (tan(x))
+//        drawFunction([](float x) { return std::exp(x / 100); }, -200, 200, 0.1f, {255, 0, 0, 255}); // Draw a sample function (exp(x))
+//        drawFunction([](float x) { return std::log(x + 200); }, -200, 200, 0.1f, {0, 0, 255, 255}); // Draw a sample function (log(x))
+//        drawFunction([](float x) { return std::sqrt(x + 200); }, -200, 200, 0.1f, {255, 255, 255, 255}); // Draw a sample function (sqrt(x))
+//        drawFunction([](float x) { return std::abs(x); }, -200, 200, 0.1f, {255, 128, 0, 255}); // Draw a sample function (abs(x))
 
         SDL_RenderPresent(renderer);
     }
